@@ -1,0 +1,25 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block content %}
+
+
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-10 col-sm-12 text-center">
+                <h1 class="display-2">Connect With Your Friends</h1>
+                <p>Follow people who interest you, stay up to date on the latest and join conversations with your
+                    friends</p>
+                <div class="d-flex justify-content-center mt-5">
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'auth_logout' %}" class="btn btn-light mr-2">Logout</a>
+                    {% else %}
+                        <a href="{% url 'auth_login' %}" class="btn btn-light mr-2">Login</a>
+                    {% endif %}
+                    <a href="{% url 'registration_register' %}" class="btn btn-dark mr-2">Register</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

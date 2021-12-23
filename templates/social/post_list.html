@@ -1,0 +1,33 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block content %}
+    <div class="container">
+
+        <div class="row justify-content-center mt-3">
+            <div class="col-md-5 col-sm-12 border-bottom">
+                <h5>Add a Post</h5>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mt-3 mb-5">
+            <div class="col-md-5 col-sm-12 border-bottom">
+                <form method="post" action="{% url 'social:post-list' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn-block btn btn-dark">Save</button>
+                </form>
+            </div>
+        </div>
+
+
+        {% for post in post_list %}
+            <div class="row justify-content-center mt-3">
+                <div class="col-md-5 col-sm-12 border-bottom">
+                    <p><strong>{{ post.author }}</strong> {{ post.created_at }}</p>
+                    <p>{{ post.body }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}
