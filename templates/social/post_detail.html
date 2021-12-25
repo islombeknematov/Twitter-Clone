@@ -1,0 +1,32 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block content %}
+    <div class="container">
+
+        <div class="row mt-5">
+            <div class="col-md-5 col-sm-6">
+                <a href="{% url 'social:post-list' %}" class="btn btn-light">Back To Feed</a>
+            </div>
+
+
+            <div class="row justify-content-center mt-3 mb-5">
+                <div class="col-md-5 col-sm-12 border-bottom">
+                 <p><strong>{{ post.author }}</strong>{{ post.created_at }}</p>
+                    <p>{{ post.body }}</p>
+                </div>
+            </div>
+
+            {#        <div class="row justify-content-center mt-3 mb-5">#}
+            {#            <div class="col-md-5 col-sm-12 border-bottom">#}
+            {#                <form method="post" action="{% url 'social:post-list' %}">#}
+            {#                    {% csrf_token %}#}
+            {#                    {{ form.as_p }}#}
+            {#                    <button type="submit" class="btn-block btn btn-dark">Save</button>#}
+            {#                </form>#}
+            {#            </div>#}
+            {#        </div>#}
+        </div>
+
+    </div>
+{% endblock content %}
