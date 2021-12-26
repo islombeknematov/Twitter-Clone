@@ -8,25 +8,39 @@
             <div class="col-md-5 col-sm-6">
                 <a href="{% url 'social:post-list' %}" class="btn btn-light font-weight-bolder">Back To Feed</a>
             </div>
-
-
-            <div class="row justify-content-center mt-3 mb-5">
-                <div class="col-md-5 col-sm-12 border-bottom">
-                 <p><strong>{{ post.author }}</strong>{{ post.created_at }}</p>
-                    <p>{{ post.body }}</p>
-                </div>
-            </div>
-
-                    <div class="row justify-content-center mt-3 mb-5">
-                        <div class="col-md-5 col-sm-12 border-bottom">
-                            <form method="post">
-                                {% csrf_token %}
-                                {{ form.as_p }}
-                                <button type="submit" class="btn btn-success btn-block ml-4">Save</button>
-                            </form>
-                        </div>
-                    </div>
         </div>
+
+        <div class="row justify-content-center mt-3 mb-5">
+            <div class="col-md-5 col-sm-12 border-bottom">
+                <p>
+                    <strong>{{ post.author }}</strong>{{ post.created_at }}
+                    {% if request.user == post.author %}
+                        <a href="{% url 'social:post-update' post.pk %}"><i class="fa fa-edit"></i></a>
+                        <a href="{% url 'social:post-delete' post.pk %}"><i class="fa fa-trash"></i></a>
+                    {% endif %}
+                </p>
+                <p>{{ post.body }}</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mt-3 mb-5">
+            <div class="col-md-5 col-sm-12 border-bottom">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-success btn-block ml-4">Save</button>
+                </form>
+            </div>
+        </div>
+
+        {% for comment in comments %}
+        <div class="row justify-content-center mt-3 mb-5">
+            <div class="col-md-5 col-sm-12 border-bottom">
+                <p><strong>{{ comment.author }}</strong> {{ comment.created_at }}</p>
+                <p>{{ comment.comment }}</p>
+            </div>
+        </div>
+        {% endfor %}
 
     </div>
 {% endblock content %}

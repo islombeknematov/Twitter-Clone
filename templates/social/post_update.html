@@ -1,0 +1,29 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block content %}
+    <div class="container">
+
+        <div class="row mt-5">
+            <div class="col-md-5 col-sm-6">
+                <a href="{% url 'social:post-detail' object.pk %}" class="btn btn-light font-weight-bolder">Back To Post</a>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mt-3">
+            <div class="col-md-5 col-sm-12 border-bottom">
+                <h5>Update Your Post</h5>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mt-3 mb-5">
+            <div class="col-md-5 col-sm-12 border-bottom">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn-block btn btn-dark">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
