@@ -85,3 +85,21 @@ class PostModelDeleteView(DeleteView):
     model = PostModel
     template_name = 'social/post_delete.html'
     success_url = reverse_lazy('social:post-list')
+
+
+class CommentModelDeleteView(DeleteView):
+    model = CommentModel
+    template_name = 'social/comment_delete.html'
+
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        return reverse_lazy('social:post-detail', kwargs={'pk': pk})
+
+
+
+
+
+
+
+
+
