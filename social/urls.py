@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import PostModelListView, PostModelDetailView, PostModelUpdateView, PostModelDeleteView, \
-    CommentModelDeleteView
+from .views import PostModelListView, PostModelDetailView,\
+    PostModelUpdateView, PostModelDeleteView, CommentModelDeleteView
 
 app_name = 'social'
 
