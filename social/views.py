@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from django.views import View
 from django.urls import reverse_lazy
-
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from .forms import PostModelForm, CommentModelForm
 from .models import PostModel, CommentModel
 from django.views.generic.edit import UpdateView, DeleteView
 
 
-class PostModelListView(View):
+class PostModelListView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         posts = PostModel.objects.all().order_by('-created_at')
@@ -35,7 +35,7 @@ class PostModelListView(View):
         return render(request, 'social/post_list.html', context)
 
 
-class PostModelDetailView(View):
+class PostModelDetailView(LoginRequiredMixin, View):
 
     def get(self, request, pk, *args, **kwargs):
         post = PostModel.objects.get(pk=pk)
@@ -71,7 +71,7 @@ class PostModelDetailView(View):
         return render(request, 'social/post_detail.html', context)
 
 
-class PostModelUpdateView(UpdateView):
+class PostModelUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = PostModel
     fields = ['body']
     template_name = 'social/post_update.html'
@@ -80,27 +80,30 @@ class PostModelUpdateView(UpdateView):
         pk = self.kwargs['pk']
         return reverse_lazy('social:post-detail', kwargs={'pk': pk})
 
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
 
-class PostModelDeleteView(DeleteView):
+
+class PostModelDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = PostModel
     template_name = 'social/post_delete.html'
     success_url = reverse_lazy('social:post-list')
 
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
 
-class CommentModelDeleteView(DeleteView):
+
+class CommentModelDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = CommentModel
     template_name = 'social/comment_delete.html'
-    success_url = reverse_lazy('social:post-list')
+    # success_url = reverse_lazy('social:post-detail')
 
-    # def get_success_url(self):
-    #     pk = self.kwargs['pk']
-    #     return reverse_lazy('social:post-detail', kwargs={'pk': pk})
+    def get_success_url(self):
+        pk = self.kwargs['post_pk']
+        return reverse_lazy('social:post-detail', kwargs={'pk': pk})
 
-
-
-
-
-
-
-
-
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author

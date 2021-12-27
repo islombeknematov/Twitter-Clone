@@ -38,7 +38,7 @@
                 <div class="col-md-5 col-sm-12 border-bottom">
                     <p>
                         <strong>{{ comment.author }}</strong> {{ comment.created_at }}
-                        {% if request.user == post.author %}
+                        {% if request.user == comment.author %}
                             <a href="{% url 'social:comment-delete' post.pk comment.pk %}"><i class="fa fa-trash"></i></a>
                         {% endif %}
                     </p>
