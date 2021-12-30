@@ -23,7 +23,7 @@ AUTHENTICATION_BACKENDS = [
 
 INSTALLED_APPS = [
 
-    # 'registration',
+    'registration',
 
     'allauth',
     'allauth.account',

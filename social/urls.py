@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import PostModelListView, PostModelDetailView,\
-    PostModelUpdateView, PostModelDeleteView, CommentModelDeleteView
+from .views import PostModelListView, PostModelDetailView, \
+    PostModelUpdateView, PostModelDeleteView, CommentModelDeleteView, UserProfileModelView
 
 app_name = 'social'
 
@@ -10,4 +10,6 @@ urlpatterns = [
     path('post/update/<int:pk>/', PostModelUpdateView.as_view(), name='post-update'),
     path('post/delete/<int:pk>/', PostModelDeleteView.as_view(), name='post-delete'),
     path('post/<int:post_pk>/comment/delete/<int:pk>/', CommentModelDeleteView.as_view(), name='comment-delete'),
+    path('profile/<int:pk>/', UserProfileModelView.as_view(), name='user-profile'),
+
 ]
