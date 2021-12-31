@@ -124,6 +124,19 @@ class UserProfileModelView(View):
         return render(request, 'social/profile.html', context)
 
 
+class ProfileModelUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = UserProfileModel
+    fields = ['name', 'bio', 'birth_date', 'location', 'picture']
+    template_name = 'social/profile_update.html'
+
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        return reverse_lazy('social:user-profile', kwargs={'pk': pk})
+
+    def test_func(self):
+        profile = self.get_object()
+        return self.request.user == profile.user
+
 
 
 
