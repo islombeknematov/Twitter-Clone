@@ -44,6 +44,8 @@ class UserProfileModel(models.Model):
     picture = models.ImageField(upload_to='profile_photos',
                                 default='profile_photos/default_image.png', null=True, blank=True)
 
+    followers = models.ManyToManyField(User, blank=True, related_name='followers')
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

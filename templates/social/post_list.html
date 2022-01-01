@@ -24,10 +24,12 @@
         {% for post in post_list %}
             <div class="row justify-content-center mt-3">
                 <div class="col-md-5 col-sm-12 border-bottom position-relative">
-                    <p><strong>{{ post.author }}</strong> {{ post.created_at }}</p>
-                    <p>{{ post.body }}</p>
-                    <a href="{% url 'social:post-detail' post.pk %}" class="stretched-link"></a>
-
+                    <p><a href="{% url 'social:user-profile' post.author.profile.pk %}" style="text-decoration: none"
+                          class="text-primary">@{{ post.author }}</a> {{ post.created_at }}</p>
+                    <div class="position-relative">
+                        <p>{{ post.body }}</p>
+                        <a href="{% url 'social:post-detail' post.pk %}" class="stretched-link"></a>
+                    </div>
                 </div>
             </div>
         {% endfor %}
