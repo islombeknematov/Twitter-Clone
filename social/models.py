@@ -12,8 +12,8 @@ class PostModel(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    # def __str__(self):
-    #     return self.author or None
+    like = models.ManyToManyField(User, blank=True, related_name='like')
+    dislike = models.ManyToManyField(User, blank=True, related_name='dislike')
 
     class Meta:
         verbose_name = 'post'

@@ -79,6 +79,26 @@
                         <p>{{ post.body }}</p>
                         <a href="{% url 'social:post-detail' post.pk %}" class="stretched-link"></a>
                     </div>
+
+                    <div class="d-flex flex-row">
+                        <form method="post" action="{% url 'social:like' post.pk %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                            <button type="submit" style="background-color: transparent; border: none; box-shadow: none">
+                                <i class="far fa-thumbs-up"> <span>{{ post.like.all.count }}</span> </i>
+                            </button>
+                        </form>
+
+                        <form method="post" action="{% url 'social:dislike' post.pk %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                            <button type="submit" style="background-color: transparent; border: none; box-shadow: none">
+                                <i class="far fa-thumbs-down"> <span>{{ post.dislike.all.count }}</span> </i>
+                            </button>
+                        </form>
+
+                    </div>
+
                 </div>
             </div>
         {% endfor %}

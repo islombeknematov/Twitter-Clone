@@ -20,6 +20,26 @@
                     {% endif %}
                 </p>
                 <p>{{ post.body }}</p>
+
+                <div class="d-flex flex-row">
+                    <form method="post" action="{% url 'social:like' post.pk %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <button type="submit" style="background-color: transparent; border: none; box-shadow: none">
+                            <i class="far fa-thumbs-up"> <span>{{ post.like.all.count }}</span> </i>
+                        </button>
+                    </form>
+
+                    <form method="post" action="{% url 'social:dislike' post.pk %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <button type="submit" style="background-color: transparent; border: none; box-shadow: none">
+                            <i class="far fa-thumbs-down"> <span>{{ post.dislike.all.count }}</span> </i>
+                        </button>
+                    </form>
+
+                </div>
+
             </div>
         </div>
 
@@ -39,7 +59,8 @@
                     <p>
                         <strong>{{ comment.author }}</strong> {{ comment.created_at }}
                         {% if request.user == comment.author %}
-                            <a href="{% url 'social:comment-delete' post.pk comment.pk %}"><i class="fa fa-trash"></i></a>
+                            <a href="{% url 'social:comment-delete' post.pk comment.pk %}"><i
+                                    class="fa fa-trash"></i></a>
                         {% endif %}
                     </p>
                     <p>{{ comment.comment }}</p>

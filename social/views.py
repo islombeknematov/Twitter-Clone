@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views import View
 from django.urls import reverse_lazy
@@ -98,6 +99,7 @@ class PostModelDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 class CommentModelDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = CommentModel
     template_name = 'social/comment_delete.html'
+
     # success_url = reverse_lazy('social:post-detail')
 
     def get_success_url(self):
@@ -163,6 +165,7 @@ class AddFollower(LoginRequiredMixin, View):
 
         return redirect('social:user-profile', pk=profile.pk)
 
+
 class RemoveFollower(LoginRequiredMixin, View):
     def post(self, request, pk, *args, **kwargs):
         profile = UserProfileModel.objects.get(pk=pk)
@@ -171,9 +174,59 @@ class RemoveFollower(LoginRequiredMixin, View):
         return redirect('social:user-profile', pk=profile.pk)
 
 
+class AddLike(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        post = PostModel.objects.get(pk=pk)
+
+        is_dislike = False
+        for dislike in post.dislike.all():
+            if dislike == request.user:
+                is_dislike = True
+                break
+
+        if is_dislike:
+            post.dislike.remove(request.user)
+
+        is_like = False
+        for like in post.like.all():
+            if like == request.user:
+                is_like = True
+                break
+
+        if not is_like:
+            post.like.add(request.user)
+
+        if is_like:
+            post.like.remove(request.user)
+
+        next = request.POST.get('next', '/')
+        return HttpResponseRedirect(next)
 
 
+class AddDislike(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        post = PostModel.objects.get(pk=pk)
 
+        is_like = False
+        for like in post.like.all():
+            if like == request.user:
+                is_like = True
+                break
 
+        if is_like:
+            post.like.remove(request.user)
 
+        is_dislike = False
+        for dislike in post.dislike.all():
+            if dislike == request.user:
+                is_dislike = True
+                break
 
+        if not is_dislike:
+            post.dislike.add(request.user)
+
+        if is_dislike:
+            post.dislike.remove(request.user)
+
+        next = request.POST.get('next', '/')
+        return HttpResponseRedirect(next)
