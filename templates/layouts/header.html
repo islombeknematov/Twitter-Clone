@@ -3,14 +3,17 @@
 {% block content %}
     <nav class="navbar navbar-light bg-light justify-content-between">
         <a href="{% url 'social:post-list' %}" class="navbar-brand"> <i class="fa fa-comment-o"></i> Social Network</a>
-        <form class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="form-inline" method="get" action="{% url 'social:profile-search' %}">
+            <input name="query" value="{{ request.GET.query }}" class="form-control mr-sm-2" type="search"
+                   placeholder="Username" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            {#        </form>#}
 
             {% if user.is_authenticated %}
-                <button class="btn btn-dark ml-2"><a class="text-light" href="{% url 'auth_logout' %}">Logout</a></button>
-                <a  style="font-size: 25px" class="mr-2 ml-2" href="{% url 'social:user-profile' user.profile.pk %}"><i class="fa fa-user-circle"></i></a>
+                <button class="btn btn-dark ml-2"><a class="text-light" href="{% url 'auth_logout' %}">Logout</a>
+                </button>
+                <a style="font-size: 25px" class="mr-2 ml-2" href="{% url 'social:user-profile' user.profile.pk %}"><i
+                        class="fa fa-user-circle"></i></a>
+            {% else %}
             {% endif %}
         </form>
 
