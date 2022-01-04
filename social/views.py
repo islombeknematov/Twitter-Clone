@@ -2,7 +2,7 @@ from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views import View
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from .forms import PostModelForm, CommentModelForm
 from .models import PostModel, CommentModel, UserProfileModel
@@ -12,7 +12,12 @@ from django.views.generic.edit import UpdateView, DeleteView
 class PostModelListView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
-        posts = PostModel.objects.all().order_by('-created_at')
+
+        logged_in_user = request.user
+
+        posts = PostModel.objects.filter(
+            author__profile__followers__in=[logged_in_user.id]
+        ).order_by('-created_at')
         form = PostModelForm()
         context = {
             'post_list': posts,

@@ -12,13 +12,25 @@
 
         <div class="row justify-content-center mt-3 mb-5">
             <div class="col-md-5 col-sm-12 border-bottom">
-                <p>
-                    <strong>{{ post.author }}</strong>{{ post.created_at }}
-                    {% if request.user == post.author %}
-                        <a href="{% url 'social:post-update' post.pk %}"><i class="fa fa-edit"></i></a>
-                        <a href="{% url 'social:post-delete' post.pk %}"><i class="fa fa-trash"></i></a>
-                    {% endif %}
-                </p>
+
+
+                <div class="mt-3">
+                    <a href="{% url 'social:user-profile' post.author.profile.pk %}">
+                        <img class="rounded-circle post-img float-left mr-2" height="30" width="30"
+                             src="{{ post.author.profile.picture.url }}" alt="">
+                    </a>
+                    <p class=""><a href="{% url 'social:user-profile' post.author.profile.pk %}"
+                                   style="text-decoration: none"
+                                   class="text-primary">@{{ post.author }}</a> {{ post.created_at }}
+                    </p>
+                </div>
+
+
+                {% if request.user == post.author %}
+                    <a href="{% url 'social:post-update' post.pk %}"><i class="fa fa-edit"></i></a>
+                    <a href="{% url 'social:post-delete' post.pk %}"><i class="fa fa-trash"></i></a>
+                {% endif %}
+
                 <p>{{ post.body }}</p>
 
                 <div class="d-flex flex-row">
