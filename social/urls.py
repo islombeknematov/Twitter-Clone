@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import PostModelListView, PostModelDetailView, \
     PostModelUpdateView, PostModelDeleteView, CommentModelDeleteView, UserProfileModelView, ProfileModelUpdateView, \
-    AddFollower, RemoveFollower, AddLike, AddDislike, UserSearch
+    AddFollower, RemoveFollower, AddLike, AddDislike, UserSearch, ListFollowers
 
 app_name = 'social'
 
@@ -22,6 +22,8 @@ urlpatterns = [
     path('post/<int:pk>/like/', AddLike.as_view(), name='like'),
     path('post/<int:pk>/dislike/', AddDislike.as_view(), name='dislike'),
 
-    path('search/', UserSearch.as_view(), name='profile-search')
+    path('search/', UserSearch.as_view(), name='profile-search'),
+
+    path('profile/<int:pk>/followers/', ListFollowers.as_view(), name='list-followers'),
 
 ]

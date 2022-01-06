@@ -47,7 +47,7 @@
                     <p>{{ profile.bio }}</p>
                 {% endif %}
                 <div class="mb-3">
-                    <p>Followers: {{ number_of_followers }}</p>
+                    <a href="{% url 'social:list-followers' profile.pk %}" class="post-link">Followers: {{ number_of_followers }}</a>
                     {% if user == request.user %}
                     {% else %}
                         {% if is_following %}
