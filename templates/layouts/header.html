@@ -11,7 +11,7 @@
             {% if user.is_authenticated %}
                 <button class="btn btn-dark ml-2"><a class="text-light" href="{% url 'auth_logout' %}">Logout</a>
                 </button>
-                <a style="font-size: 25px" class="mr-2 ml-2" href="{% url 'social:user-profile' user.profile.pk %}"><i
+                <a style="font-size: 25px" class="mr-2 ml-2" href="{% url 'social:user-profile' request.user.profile.pk %}"><i
                         class="fa fa-user-circle"></i></a>
             {% else %}
             {% endif %}
