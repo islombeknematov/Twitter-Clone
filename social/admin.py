@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import PostModel, UserProfileModel
+from .models import PostModel, UserProfileModel, CommentModel
 
 
 # admin.site.register(PostModel)
@@ -14,6 +14,10 @@ class UserProfileModelAdmin(admin.ModelAdmin):
     list_display = ['name', 'birth_date', 'created_at']
 
 
+# admin.site.register(CommentModel)
+@admin.register(CommentModel)
+class CommentModelAdmin(admin.ModelAdmin):
+    list_display = ['author', 'created_at']
 
 
 

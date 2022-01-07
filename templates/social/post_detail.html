@@ -64,52 +64,93 @@
         </div>
 
         {% for comment in comments %}
-            <div class="row justify-content-center mt-3 mb-5">
-                <div class="col-md-5 col-sm-12 border-bottom">
-                    <p>
-                        <strong>{{ comment.author }}</strong> {{ comment.created_at }}
+
+            {% if comment.is_parent %}
+
+                <div class="row justify-content-center mt-3 mb-5">
+                    <div class="col-md-5 col-sm-12 border-bottom">
+                        <p>
+                        <div>
+                            <a href="{% url 'social:user-profile' comment.author.profile.pk %}">
+                                <img class="rounded-circle post-img" height="30" width="30"
+                                     src="{{ comment.author.profile.picture.url }}" alt="">
+                            </a>
+                            <p class="post-text">
+                                <a href="{% url 'social:user-profile' comment.author.profile.pk %}">
+                                    @{{ comment.author }}</a> {{ comment.created_at }}
+                            </p>
+                        </div>
+
                         {% if request.user == comment.author %}
                             <a href="{% url 'social:comment-delete' post.pk comment.pk %}"><i
                                     class="fa fa-trash"></i></a>
                         {% endif %}
-                    </p>
-                    <p>{{ comment.comment }}</p>
+                        </p>
+                        <p>{{ comment.comment }}</p>
 
-                    <div class="d-flex flex-row">
-                        <form method="post" action="{% url 'social:comment-like' post.pk comment.pk %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="next" value="{{ request.path }}">
-                            <button type="submit" style="background-color: transparent; border: none; box-shadow: none">
-                                <i class="far fa-thumbs-up"> <span>{{ comment.like.all.count }}</span> </i>
-                            </button>
-                        </form>
+                        <div class="d-flex flex-row">
+                            <form method="post" action="{% url 'social:comment-like' post.pk comment.pk %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.path }}">
+                                <button type="submit"
+                                        style="background-color: transparent; border: none; box-shadow: none">
+                                    <i class="far fa-thumbs-up"> <span>{{ comment.like.all.count }}</span> </i>
+                                </button>
+                            </form>
 
-                        <form method="post" action="{% url 'social:comment-dislike' post.pk comment.pk %}">
+                            <form method="post" action="{% url 'social:comment-dislike' post.pk comment.pk %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.path }}">
+                                <button type="submit"
+                                        style="background-color: transparent; border: none; box-shadow: none">
+                                    <i class="far fa-thumbs-down"> <span>{{ comment.dislike.all.count }}</span> </i>
+                                </button>
+                            </form>
+                            <div>
+                                <button class="remove-default-btn"
+                                        style="background-color: transparent; border: none; box-shadow: none">
+                                    <i class="far fa-comment-dots" onclick="commentReplyToggle('{{ comment.pk }}')"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-3 mb-5 d-none" id="{{ comment.pk }}">
+                    <div class="col-md-5 col-sm-12 border-bottom">
+                        <form method="post" action="{% url 'social:comment-reply' post.pk comment.pk %}">
                             {% csrf_token %}
-                            <input type="hidden" name="next" value="{{ request.path }}">
-                            <button type="submit" style="background-color: transparent; border: none; box-shadow: none">
-                                <i class="far fa-thumbs-down"> <span>{{ comment.dislike.all.count }}</span> </i>
-                            </button>
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-success float-right">Save</button>
                         </form>
-                        <div>
-                            <button class="remove-default-btn"
-                                    style="background-color: transparent; border: none; box-shadow: none">
-                                <i class="far fa-comment-dots" onclick="commentReplyToggle('{{ comment.pk }}')"></i>
-                            </button>
+                    </div>
+                </div>
+
+                {% for child_comment in comment.children %}
+                    <div class="row justify-content-center mt-3 mb-5 ml-5">
+                        <div class="col-md-5 col-sm-12 border-bottom">
+                            <p>
+                            <div>
+                                <a href="{% url 'social:user-profile' child_comment.author.profile.pk %}">
+                                    <img class="rounded-circle post-img" height="30" width="30"
+                                         src="{{ child_comment.author.profile.picture.url }}" alt="">
+                                </a>
+                                <p class="post-text">
+                                    <a href="{% url 'social:user-profile' child_comment.author.profile.pk %}">
+                                        @{{ child_comment.author }}</a> {{ child_comment.created_at }}
+                                </p>
+                            </div>
+
+                            {% if request.user == child_comment.author %}
+                                <a href="{% url 'social:comment-delete' post.pk child_comment.pk %}"><i
+                                        class="fa fa-trash"></i></a>
+                            {% endif %}
+                            </p>
+                        <p>{{ child_comment.comment }}</p>
                         </div>
                     </div>
-
-                </div>
-            </div>
-            <div class="row justify-content-center mt-3 mb-5 d-none" id="{{ comment.pk }}">
-                <div class="col-md-5 col-sm-12 border-bottom">
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit" class="btn btn-success float-right">Save</button>
-                    </form>
-                </div>
-            </div>
+                {% endfor %}
+            {% endif %}
         {% endfor %}
 
     </div>

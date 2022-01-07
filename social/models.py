@@ -41,8 +41,8 @@ class CommentModel(models.Model):
             return True
         return False
 
-    def __str__(self):
-        return self.author
+    # def __str__(self):
+    #     return self.author
 
     class Meta:
         verbose_name = 'comment'
