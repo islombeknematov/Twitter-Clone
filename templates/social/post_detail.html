@@ -1,5 +1,5 @@
 {% extends 'layouts/base.html' %}
-
+{% load static %}
 
 {% block content %}
     <div class="container">
@@ -49,9 +49,7 @@
                             <i class="far fa-thumbs-down"> <span>{{ post.dislike.all.count }}</span> </i>
                         </button>
                     </form>
-
                 </div>
-
             </div>
         </div>
 
@@ -60,7 +58,7 @@
                 <form method="post">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit" class="btn btn-success btn-block ml-4">Save</button>
+                    <button type="submit" class="btn btn-success float-right">Save</button>
                 </form>
             </div>
         </div>
@@ -76,9 +74,47 @@
                         {% endif %}
                     </p>
                     <p>{{ comment.comment }}</p>
+
+                    <div class="d-flex flex-row">
+                        <form method="post" action="{% url 'social:comment-like' post.pk comment.pk %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                            <button type="submit" style="background-color: transparent; border: none; box-shadow: none">
+                                <i class="far fa-thumbs-up"> <span>{{ comment.like.all.count }}</span> </i>
+                            </button>
+                        </form>
+
+                        <form method="post" action="{% url 'social:comment-dislike' post.pk comment.pk %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                            <button type="submit" style="background-color: transparent; border: none; box-shadow: none">
+                                <i class="far fa-thumbs-down"> <span>{{ comment.dislike.all.count }}</span> </i>
+                            </button>
+                        </form>
+                        <div>
+                            <button class="remove-default-btn"
+                                    style="background-color: transparent; border: none; box-shadow: none">
+                                <i class="far fa-comment-dots" onclick="commentReplyToggle('{{ comment.pk }}')"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row justify-content-center mt-3 mb-5 d-none" id="{{ comment.pk }}">
+                <div class="col-md-5 col-sm-12 border-bottom">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-success float-right">Save</button>
+                    </form>
                 </div>
             </div>
         {% endfor %}
 
     </div>
+
+
+    <script type="text/javascript" src="{% static 'js/social.js' %}"></script>
+
 {% endblock content %}

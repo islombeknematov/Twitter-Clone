@@ -1,7 +1,8 @@
 from django.urls import path
 from .views import PostModelListView, PostModelDetailView, \
     PostModelUpdateView, PostModelDeleteView, CommentModelDeleteView, UserProfileModelView, ProfileModelUpdateView, \
-    AddFollower, RemoveFollower, AddLike, AddDislike, UserSearch, ListFollowers
+    AddFollower, RemoveFollower, PostAddLike, PostAddDislike, UserSearch, ListFollowers, CommentAddLike, \
+    CommentAddDislike, CommentReplyView
 
 app_name = 'social'
 
@@ -19,8 +20,12 @@ urlpatterns = [
     path('profile/<int:pk>/followers/add/', AddFollower.as_view(), name='add-follower'),
     path('profile/<int:pk>/followers/remove/', RemoveFollower.as_view(), name='remove-follower'),
 
-    path('post/<int:pk>/like/', AddLike.as_view(), name='like'),
-    path('post/<int:pk>/dislike/', AddDislike.as_view(), name='dislike'),
+    path('post/<int:pk>/like/', PostAddLike.as_view(), name='like'),
+    path('post/<int:pk>/dislike/', PostAddDislike.as_view(), name='dislike'),
+
+    path('post/<int:post>/comment/<int:pk>/like/', CommentAddLike.as_view(), name='comment-like'),
+    path('post/<int:post>/comment/<int:pk>/dislike/', CommentAddDislike.as_view(), name='comment-dislike'),
+    path('post/<int:post_pk>/comment/<int:pk>/reply/', CommentReplyView.as_view(), name='comment-reply'),
 
     path('search/', UserSearch.as_view(), name='profile-search'),
 
