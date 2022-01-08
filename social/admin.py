@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import PostModel, UserProfileModel, CommentModel
+from .models import PostModel, UserProfileModel, CommentModel, NotificationModel
 
 
 # admin.site.register(PostModel)
@@ -20,6 +20,10 @@ class CommentModelAdmin(admin.ModelAdmin):
     list_display = ['author', 'created_at']
 
 
+admin.site.register(NotificationModel)
+# @admin.register(NotificationModel)
+# class NotificationModelAdmin(admin.ModelAdmin):
+    # list_display =
 
 
 
