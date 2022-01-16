@@ -24,7 +24,7 @@ class CommentModel(models.Model):
     comment = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(PostModel, on_delete=models.CASCADE)
+    post = models.ForeignKey('PostModel', on_delete=models.CASCADE)
 
     like = models.ManyToManyField(User, blank=True, related_name='comment_like')
     dislike = models.ManyToManyField(User, blank=True, related_name='comment_dislike')

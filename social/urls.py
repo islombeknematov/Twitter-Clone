@@ -2,7 +2,7 @@ from django.urls import path
 from .views import PostModelListView, PostModelDetailView, \
     PostModelUpdateView, PostModelDeleteView, CommentModelDeleteView, UserProfileModelView, ProfileModelUpdateView, \
     AddFollower, RemoveFollower, PostAddLike, PostAddDislike, UserSearch, ListFollowers, CommentAddLike, \
-    CommentAddDislike, CommentReplyView
+    CommentAddDislike, CommentReplyView, PostNotification, FollowNotification
 
 app_name = 'social'
 
@@ -30,5 +30,10 @@ urlpatterns = [
     path('search/', UserSearch.as_view(), name='profile-search'),
 
     path('profile/<int:pk>/followers/', ListFollowers.as_view(), name='list-followers'),
+
+    path('notification/<int:notification_pk>/post/<int:post_pk>/', PostNotification.as_view(),
+         name='post-notification'),
+    path('notification/<int:notification_pk>/profile/<int:profile_pk>/', FollowNotification.as_view(),
+         name='follow-notification'),
 
 ]
