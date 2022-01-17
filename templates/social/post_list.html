@@ -12,7 +12,7 @@
 
         <div class="row justify-content-center mt-3 mb-5">
             <div class="col-md-5 col-sm-12 border-bottom">
-                <form method="post" action="{% url 'social:post-list' %}">
+                <form method="post" enctype="multipart/form-data" action="{% url 'social:post-list' %}">
                     {% csrf_token %}
                     {{ form.as_p }}
                     <button type="submit" class="btn-block btn btn-dark">Save</button>
@@ -35,6 +35,9 @@
                         </p>
                     </div>
                     <div class="position-relative">
+                        {% if post.image %}
+                            <img src="{{ post.image.url }}" alt="" class="post-image">
+                        {% endif %}
                         <p>{{ post.body }}</p>
                         <a href="{% url 'social:post-detail' post.pk %}" class="stretched-link"></a>
                     </div>

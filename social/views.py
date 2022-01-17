@@ -1,5 +1,5 @@
 from django.db.models import Q
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
 from django.urls import reverse_lazy, reverse
@@ -13,7 +13,6 @@ class PostModelListView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         logged_in_user = request.user
-
         posts = PostModel.objects.filter(
             author__profile__followers__in=[logged_in_user.id]
         ).order_by('-created_at')
@@ -26,8 +25,11 @@ class PostModelListView(LoginRequiredMixin, View):
         return render(request, 'social/post_list.html', context)
 
     def post(self, request, *args, **kwargs):
-        posts = PostModel.objects.all().order_by('-created_at')
-        form = PostModelForm(request.POST)
+        logged_in_user = request.user
+        posts = PostModel.objects.filter(
+            author__profile__followers__in=[logged_in_user.id]
+        ).order_by('-created_at')
+        form = PostModelForm(request.POST, files=request.FILES)
         if form.is_valid():
             new_post = form.save(commit=False)
             new_post.author = request.user
@@ -381,3 +383,40 @@ class FollowNotification(View):
         notification.save()
 
         return redirect('social:user-profile', pk=profile_pk)
+
+
+class RemoveNotification(View):
+    def delete(self, request, notification_pk, *args, **kwargs):
+        notification = NotificationModel.objects.get(pk=notification_pk)
+
+        notification.user_has_seen = True
+        notification.save()
+
+        return HttpResponse("Success", content_type='text/plain')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

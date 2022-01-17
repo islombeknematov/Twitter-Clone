@@ -15,6 +15,8 @@ class PostModel(models.Model):
     like = models.ManyToManyField(User, blank=True, related_name='like')
     dislike = models.ManyToManyField(User, blank=True, related_name='dislike')
 
+    image = models.ImageField(upload_to='post_photo', null=True, blank=True)
+
     class Meta:
         verbose_name = 'post'
         verbose_name_plural = 'posts'
