@@ -31,3 +31,11 @@ class CommentModelForm(forms.ModelForm):
         fields = ['comment']
 
 
+class ThreadForm(forms.Form):
+    username = forms.CharField(label='', max_length=100)
+
+
+
+
+
+

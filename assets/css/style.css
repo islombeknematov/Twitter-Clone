@@ -399,7 +399,7 @@ body {
 /* feed page */
   .feeds-page {
       width: 100%;
-      height: 100%vh;
+      height: 100vh;
       display: none;
   }
 
@@ -947,7 +947,7 @@ body {
 }
 
 .sidebar-user-info h4 {
-    margin-bottom: 0.5rem;  
+    margin-bottom: 0.5rem;
 }
 
 .following {
@@ -1378,7 +1378,7 @@ body {
         height: 4rem;
         margin-right: 1rem;
     }
-    
+
 }
 
 @media(max-width: 400px) {
