@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.contrib.auth.models import User
 
@@ -8,7 +8,7 @@ from django.dispatch import receiver
 
 
 class PostModel(models.Model):
-    body = models.TextField()
+    body = models.TextField(verbose_name=_('body'))
     created_at = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
