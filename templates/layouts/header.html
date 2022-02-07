@@ -11,10 +11,19 @@
             {% if user.is_authenticated %}
                 <button class="btn btn-dark ml-2"><a class="text-light" href="{% url 'auth_logout' %}">Logout</a>
                 </button>
-                <a style="font-size: 25px" class="mr-2 ml-2" href="{% url 'social:user-profile' request.user.profile.pk %}"><i
+                <a style="font-size: 25px" class="mr-2 ml-2"
+                   href="{% url 'social:user-profile' request.user.profile.pk %}"><i
                         class="fa fa-user-circle"></i></a>
+
+                <div class="nat-item inbox-icon-container">
+                    <a href="{% url 'social:inbox' %}" class="inbox-icon">
+                        <i class="far fa-paper-plane"></i>
+                    </a>
+                </div>
                 <div style="border-radius: 30%; padding-left: 3px; padding-right: 3px" class="nav-item">
-                {% show_notifications %}
+
+
+                    {% show_notifications %}
                 </div>
             {% else %}
             {% endif %}
